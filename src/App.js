@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 function App() {
   
-  const API_key = "2f98716aee1d9bd976288b46dea67a9d";
+  const API_key = "";
   const city_name = "Melbourne"
   const limit = 1
   const unit = "metric"
