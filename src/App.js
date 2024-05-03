@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react';
 function App() {
   
   const API_key = "";
-  const city_name = "Melbourne"
+  //const city_name = "Melbourne"
   const limit = 1
   const unit = "metric"
   //let lat, lon = getLatLon()
 
   async function getLatLon(){
     try{
-      const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city_name}&limit=${limit}&appid=${API_key}`)
+      const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${area}&limit=${limit}&appid=${API_key}`)
 
       const json = await response.json()
       //return [json[0].lat, json[0].lon]
@@ -35,7 +35,7 @@ function App() {
 
       const json = await response.json()
       //console.log(json)
-      setTemp(json.current.temp)
+      setTemp(Math.trunc(json.current.temp))
       setWeather(json.current.weather[0].description)
 
       const icon_url = `https://openweathermap.org/img/wn/${json.current.weather[0].icon}@2x.png`
@@ -50,6 +50,7 @@ function App() {
 
   }
   
+  const [area, setArea] = useState("Melbourne")
   const [temp, setTemp] = useState("") //celcius, string
   const [weather, setWeather] = useState("") //weather description
   const [weatherIcon, setWeatherIcon] = useState("") //icon string
@@ -59,15 +60,22 @@ function App() {
 
   useEffect(()=>{
     getTodayWeather()
-  },[])
+  },[area])
 
   return (
     <div className="App">
       {
         !isLoading && (
           <>
-            <p>{city_name}</p>
-            <img src={weatherIcon} />
+            <p>
+            <select value={area} onChange={e=>setArea(e.target.value)} default="Melbourne">
+              <option value="Canberra">Canberra</option>
+              <option value="Sydney">Sydney</option>
+              <option value="Melbourne">Melbourne</option>
+              <option value="Adelaide">Adelaide</option>
+            </select>
+            </p>
+            <img src={weatherIcon} alt='weather-icon'/>
             <p>{temp} °C</p>
             <p>{weather}</p>
           </>)
